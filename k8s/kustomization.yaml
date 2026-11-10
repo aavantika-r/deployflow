@@ -6,4 +6,4 @@ resources:
   - service.yaml
 images:
   - name: avan0/deployflow
-    newTag: latest
+    newTag: 5645cb28e9ebe40dc96a2d99a02295faa6be05c8
