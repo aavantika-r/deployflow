@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployflow
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: deployflow
+  template:
+    metadata:
+      labels:
+        app: deployflow
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: web
+          image: avan0/deployflow:latest   # tag is overridden by kustomization.yaml
+          ports:
+            - containerPort: 5005
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          readinessProbe:
+            httpGet: {path: /health, port: 5005}
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet: {path: /health, port: 5005}
+            initialDelaySeconds: 10
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {cpu: 200m, memory: 128Mi}

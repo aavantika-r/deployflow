@@ -1,0 +1,6 @@
+__pycache__
+.pytest_cache
+test_app.py
+k8s
+argocd
+.github
